@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Student Result Predictor</title>
+    <style>
+        body {
+            font-family: Arial;
+            background: #f4f4f4;
+            text-align: center;
+            padding-top: 50px;
+        }
+        form {
+            background: white;
+            width: 350px;
+            margin: auto;
+            padding: 20px;
+            border-radius: 8px;
+        }
+        input {
+            width: 90%;
+            padding: 8px;
+            margin: 8px 0;
+        }
+        button {
+            padding: 10px;
+            width: 100%;
+            background: #007bff;
+            color: white;
+            border: none;
+            cursor: pointer;
+        }
+        h2 {
+            color: green;
+        }
+        h3 {
+            color: #333;
+        }
+    </style>
+</head>
+<body>
+
+<h1>Mepco Arrear Prediction</h1>
+
+<form method="POST">
+    <input type="number" step="any" name="study_hours" placeholder="Study hours per day" required>
+    <input type="number" step="any" name="attendance" placeholder="Attendance %" required>
+    <input type="number" step="any" name="cgpa" placeholder="Present CGPA" required>
+    <input type="number" step="any" name="assignment" placeholder="Assignment marks (out of 10)" required>
+    <input type="number" step="any" name="ctt" placeholder="CTT marks (out of 15)" required>
+    <input type="number" step="any" name="internal_300" placeholder="Internal marks (out of 300)" required>
+    <input type="number" name="prev_arrears" min="0" max="6" placeholder="Previous Semester Arrears (0-6)" required>
+
+    <button type="submit">Predict Result</button>
+</form>
+
+{% if result %}
+    <h2>Prediction: {{ result }}</h2>
+    <h3>Pass Probability: {{ probability }}%</h3>
+{% endif %}
+
+</body>
+</html>
