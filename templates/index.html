@@ -1,42 +1,127 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-    <title>Student Result Predictor</title>
-    <style>
-        body {
-            font-family: Arial;
-            background: #f4f4f4;
-            text-align: center;
-            padding-top: 50px;
-        }
-        form {
-            background: white;
-            width: 350px;
-            margin: auto;
-            padding: 20px;
-            border-radius: 8px;
-        }
-        input {
-            width: 90%;
-            padding: 8px;
-            margin: 8px 0;
-        }
-        button {
-            padding: 10px;
-            width: 100%;
-            background: #007bff;
-            color: white;
-            border: none;
-            cursor: pointer;
-        }
-        h2 {
-            color: green;
-        }
-        h3 {
-            color: #333;
-        }
-    </style>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Student Result Predictor</title>
+
+<style>
+/* ---------------- General Reset ---------------- */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    transition: all 0.3s ease;
+}
+
+body {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    background: linear-gradient(135deg, #0f2027, #203a43, #2c5364);
+    color: #fff;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 50px 20px;
+}
+
+/* ---------------- Heading ---------------- */
+h1 {
+    margin-bottom: 30px;
+    font-size: 2.5rem;
+    text-align: center;
+    color: #00ffcc;
+    text-shadow: 2px 2px 8px #000;
+}
+
+/* ---------------- Form ---------------- */
+form {
+    background: rgba(0, 0, 0, 0.8);
+    width: 100%;
+    max-width: 400px;
+    padding: 30px 25px;
+    border-radius: 15px;
+    box-shadow: 0 8px 20px rgba(0,0,0,0.5);
+}
+
+input {
+    width: 100%;
+    padding: 12px 15px;
+    margin: 12px 0;
+    border: none;
+    border-radius: 8px;
+    background: #1e2a38;
+    color: #fff;
+    font-size: 1rem;
+}
+
+input:focus {
+    background: #273744;
+    box-shadow: 0 0 10px #00ffcc;
+    outline: none;
+}
+
+button {
+    width: 100%;
+    padding: 12px;
+    margin-top: 10px;
+    border: none;
+    border-radius: 8px;
+    background: #00ffcc;
+    font-size: 1.1rem;
+    font-weight: bold;
+    cursor: pointer;
+}
+
+/* ---------------- Modal ---------------- */
+.modal {
+    display: none;
+    position: fixed;
+    inset: 0;
+    background: rgba(0,0,0,0.7);
+    z-index: 1000;
+    justify-content: center;
+    align-items: center;
+}
+
+.modal-content {
+    background: #0f2027;
+    padding: 30px;
+    border-radius: 15px;
+    text-align: center;
+    width: 90%;
+    max-width: 350px;
+    box-shadow: 0 0 20px #00ffcc;
+    animation: zoom 0.3s ease;
+}
+
+@keyframes zoom {
+    from { transform: scale(0.7); opacity: 0; }
+    to { transform: scale(1); opacity: 1; }
+}
+
+.modal-content h2 {
+    color: #00ffcc;
+    margin-bottom: 10px;
+}
+
+.modal-content p {
+    margin-top: 10px;
+    font-size: 1.1rem;
+}
+
+.modal-content button {
+    margin-top: 20px;
+}
+
+/* ---------------- Responsive ---------------- */
+@media(max-width: 480px) {
+    h1 { font-size: 2rem; }
+    form { padding: 20px; }
+}
+</style>
 </head>
+
 <body>
 
 <h1>Mepco Arrear Prediction</h1>
@@ -53,9 +138,51 @@
     <button type="submit">Predict Result</button>
 </form>
 
+<!-- ---------------- Result Modal ---------------- -->
+<div id="resultModal" class="modal">
+    <div class="modal-content">
+        <h2 id="modalResult"></h2>
+        <h3 id="modalProbability"></h3>
+        <p id="modalDialogue"></p>
+        <button onclick="closeModal()">OK</button>
+    </div>
+</div>
+
+<script>
+function closeModal() {
+    document.getElementById("resultModal").style.display = "none";
+    document.querySelector("form").reset();
+}
+</script>
+
 {% if result %}
-    <h2>Prediction: {{ result }}</h2>
-    <h3>Pass Probability: {{ probability }}%</h3>
+<script>
+    const result = "{{ result }}";
+    const prob = "{{ probability }}";
+
+    document.getElementById("modalResult").innerText =
+        "Prediction: " + result;
+
+    document.getElementById("modalProbability").innerText =
+        "Pass Probability: " + prob + "%";
+
+    let dialogue = "";
+
+    if (prob >= 85) {
+        dialogue = "Neyaa idhuu!? Vera maari po! Aprm ena ore jolly tha! 😎🔥";
+    } else if (prob >= 65) {
+        dialogue = "👏 Superbb! Nalla try panniruka… innum konjam focus panninaa rank list la name confirm! 😉📈";
+    } else if (prob >= 45) {
+        dialogue = "Innum knjm effort podu! Nalla padi! All the best! 💪📚";
+    }
+    else {
+        dialogue = "Onu solrathuku illaa! Seri nalla padi, arrear varama pathuko! Hardwork podu pa! 🙏📖";
+    }
+
+    document.getElementById("modalDialogue").innerText = dialogue;
+
+    document.getElementById("resultModal").style.display = "flex";
+</script>
 {% endif %}
 
 </body>
